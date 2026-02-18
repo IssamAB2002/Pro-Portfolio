@@ -49,44 +49,52 @@ def skill_list(request):
     return JsonResponse(skills, safe=False)
 
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 @require_GET
 def home_skill_list(request):
-    preferred_names = ["React", "Django", "Python", "PostgreSQL", "REST APIs"]
-    all_skills = list(
-        Skill.objects.all().values(
-            "id",
-            "name",
-            "category",
-            "icon_url",
-            "proficiency_level",
+    try:
+        preferred_names = ["React", "Django", "Python", "PostgreSQL", "REST APIs"]
+        all_skills = list(
+            Skill.objects.all().values(
+                "id",
+                "name",
+                "category",
+                "icon_url",
+                "proficiency_level",
+            )
         )
-    )
 
-    selected = []
-    used_ids = set()
+        selected = []
+        used_ids = set()
 
-    for name in preferred_names:
-        match = next((skill for skill in all_skills if skill["name"] == name), None)
-        if match and match["id"] not in used_ids:
-            selected.append(match)
-            used_ids.add(match["id"])
+        for name in preferred_names:
+            match = next((skill for skill in all_skills if skill["name"] == name), None)
+            if match and match["id"] not in used_ids:
+                selected.append(match)
+                used_ids.add(match["id"])
 
-    if len(selected) < 5:
-        fallback = sorted(
-            (
-                skill
-                for skill in all_skills
-                if skill["id"] not in used_ids and skill["category"] in {"frontend", "backend", "tools"}
-            ),
-            key=lambda skill: skill.get("proficiency_level", 0),
-            reverse=True,
-        )
-        for skill in fallback:
-            selected.append(skill)
-            if len(selected) == 5:
-                break
-
-    return JsonResponse(selected[:5], safe=False)
+        if len(selected) < 5:
+            fallback = sorted(
+                (
+                    skill
+                    for skill in all_skills
+                    if skill["id"] not in used_ids and skill["category"] in {"frontend", "backend", "tools"}
+                ),
+                key=lambda skill: skill.get("proficiency_level", 0),
+                reverse=True,
+            )
+            for skill in fallback:
+                selected.append(skill)
+                if len(selected) == 5:
+                    break
+        
+        return JsonResponse(selected[:5], safe=False)
+    except Exception as e:
+        logger.error("Error in home_skill_list view: %s", e, exc_info=True)
+        return JsonResponse({"detail": "An internal error occurred."}, status=500)
 
 
 @require_GET
