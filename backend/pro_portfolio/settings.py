@@ -133,8 +133,18 @@ if RAILWAY_PUBLIC_DOMAIN:
     CSRF_TRUSTED_ORIGINS.append(f"https://{RAILWAY_PUBLIC_DOMAIN}")
 
 # Add any additional origins from environment variables
-CORS_ALLOWED_ORIGINS.extend(env.list("DJANGO_CORS_ALLOWED_ORIGINS", default=[]))
-CSRF_TRUSTED_ORIGINS.extend(env.list("DJANGO_CSRF_TRUSTED_ORIGINS", default=[]))
+CORS_ALLOWED_ORIGINS.extend(
+    [
+        origin if origin.startswith("http") else f"https://{origin}"
+        for origin in env.list("DJANGO_CORS_ALLOWED_ORIGINS", default=[])
+    ]
+)
+CSRF_TRUSTED_ORIGINS.extend(
+    [
+        origin if origin.startswith("http") else f"https://{origin}"
+        for origin in env.list("DJANGO_CSRF_TRUSTED_ORIGINS", default=[])
+    ]
+)
 
 CORS_ALLOW_CREDENTIALS = True
 
