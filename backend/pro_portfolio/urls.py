@@ -26,7 +26,7 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     path("api/", include("portfolio.urls")),
     # Catch-all for React frontend (must be last)
-    re_path(r'^.*$', TemplateView.as_view(template_name='index.html')),
+    re_path(r'^.*$', TemplateView.as_view(template_name='react/index.html')),
 ]
 
 # Serve media files in development only
