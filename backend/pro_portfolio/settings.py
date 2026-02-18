@@ -80,9 +80,30 @@ TEMPLATES = [
 
 # --- DATABASE ---
 # Uses dj-database-url to parse the DATABASE_URL from Railway
-DATABASES = {
-    "default": dj_database_url.config(conn_max_age=600, ssl_require=True)
-}
+# Check if DATABASE_URL or POSTGRES_URL is available
+DATABASE_URL = env("DATABASE_URL", default=None) or env("POSTGRES_URL", default=None)
+
+if DATABASE_URL:
+    # Production: Use Railway's provided database URL
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+else:
+    # Development: Use individual environment variables
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": env("PGDATABASE", default=env("DB_NAME", default="railway")),
+            "USER": env("PGUSER", default=env("DB_USER", default="postgres")),
+            "PASSWORD": env("PGPASSWORD", default=env("DB_PASSWORD", default="")),
+            "HOST": env("PGHOST", default=env("DB_HOST", default="localhost")),
+            "PORT": env("PGPORT", default=env("DB_PORT", default="5432")),
+        }
+    }
 
 
 # --- STATIC & MEDIA SETTINGS ---
