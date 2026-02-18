@@ -1,0 +1,218 @@
+export const projectsData = [
+  {
+    id: 'ecommerce-platform',
+    title: 'E-Commerce Platform',
+    shortDesc: 'A full-stack shopping experience with secure checkout, order management, and analytics.',
+    fullDesc:
+      'This platform delivers a complete online shopping workflow with product browsing, cart, payments, and a merchant dashboard focused on conversion and operational visibility.',
+    tech: ['React', 'Django', 'PostgreSQL', 'Stripe'],
+    imageUrl: 'https://placehold.co/1200x700/31194D/FFD700?text=E-Commerce+Home',
+    images: [
+      'https://placehold.co/1200x700/31194D/FFD700?text=E-Commerce+Home',
+      'https://placehold.co/1200x700/31194D/FFD700?text=Product+Catalog',
+      'https://placehold.co/1200x700/31194D/FFD700?text=Checkout+Flow',
+    ],
+    liveUrl: 'https://example.com/ecommerce',
+    githubUrl: 'https://github.com/example/ecommerce-platform',
+    category: 'fullstack',
+    role: [
+      'Built the React storefront and reusable UI component system.',
+      'Designed Django REST APIs for catalog, orders, and users.',
+      'Integrated payment flow and webhook-based order confirmations.',
+    ],
+    challenges: [
+      'Handled cart state consistency across guest and authenticated sessions.',
+      'Improved API performance with indexed queries and selective prefetching.',
+      'Implemented resilient payment retry and failure recovery logic.',
+    ],
+  },
+  {
+    id: 'fitness-tracker',
+    title: 'Fitness Tracker App',
+    shortDesc: 'A mobile-first health app for workouts, nutrition logging, and progress tracking.',
+    fullDesc:
+      'A cross-platform product that helps users plan routines, track personal records, and monitor nutrition trends with clear visual progress over time.',
+    tech: ['Flutter', 'Firebase', 'Dart'],
+    imageUrl: 'https://placehold.co/1200x700/31194D/FFD700?text=Fitness+Dashboard',
+    images: [
+      'https://placehold.co/1200x700/31194D/FFD700?text=Fitness+Dashboard',
+      'https://placehold.co/1200x700/31194D/FFD700?text=Workout+Planner',
+      'https://placehold.co/1200x700/31194D/FFD700?text=Nutrition+Tracking',
+    ],
+    liveUrl: 'https://example.com/fitness',
+    githubUrl: 'https://github.com/example/fitness-tracker',
+    category: 'mobile',
+    role: [
+      'Developed shared Flutter UI for Android and iOS.',
+      'Implemented authentication, cloud sync, and offline fallback.',
+      'Built dashboard charts for consistency and adherence trends.',
+    ],
+    challenges: [
+      'Balanced realtime sync with battery usage on lower-end devices.',
+      'Designed conflict resolution for concurrent data updates.',
+      'Reduced jank by optimizing list virtualization and rebuild scopes.',
+    ],
+  },
+  {
+    id: 'ai-support-assistant',
+    title: 'AI Support Assistant',
+    shortDesc: 'An AI assistant for customer support automation with human handoff when needed.',
+    fullDesc:
+      'The assistant classifies incoming issues, suggests accurate responses, and escalates complex cases to agents with conversation context preserved.',
+    tech: ['Python', 'FastAPI', 'OpenAI API', 'Redis'],
+    imageUrl: 'https://placehold.co/1200x700/31194D/FFD700?text=AI+Support+Inbox',
+    images: [
+      'https://placehold.co/1200x700/31194D/FFD700?text=AI+Support+Inbox',
+      'https://placehold.co/1200x700/31194D/FFD700?text=Conversation+Assist',
+      'https://placehold.co/1200x700/31194D/FFD700?text=Analytics+Panel',
+    ],
+    liveUrl: 'https://example.com/ai-assistant',
+    githubUrl: 'https://github.com/example/ai-support-assistant',
+    category: 'ai',
+    role: [
+      'Built prompt and retrieval pipeline for domain-aware responses.',
+      'Implemented FastAPI services and queue-based background tasks.',
+      'Added usage telemetry and quality monitoring dashboards.',
+    ],
+    challenges: [
+      'Mitigated hallucinations with context filtering and confidence checks.',
+      'Reduced latency through response streaming and caching.',
+      'Created safe fallback flows for ambiguous user intent.',
+    ],
+  },
+  {
+    id: 'crm-dashboard',
+    title: 'CRM Dashboard',
+    shortDesc: 'A sales operations dashboard for lead lifecycle, pipeline forecasting, and activity logs.',
+    fullDesc:
+      'A productivity-focused CRM interface that centralizes lead management, forecasting, and team collaboration with role-based access and reporting.',
+    tech: ['React', 'Node.js', 'MongoDB', 'Tailwind CSS'],
+    imageUrl: 'https://placehold.co/1200x700/31194D/FFD700?text=CRM+Overview',
+    images: [
+      'https://placehold.co/1200x700/31194D/FFD700?text=CRM+Overview',
+      'https://placehold.co/1200x700/31194D/FFD700?text=Pipeline+Board',
+      'https://placehold.co/1200x700/31194D/FFD700?text=Sales+Reports',
+    ],
+    liveUrl: 'https://example.com/crm',
+    githubUrl: 'https://github.com/example/crm-dashboard',
+    category: 'fullstack',
+    role: [
+      'Implemented responsive dashboard widgets and advanced filtering.',
+      'Created secure CRUD APIs with permission-based controls.',
+      'Built export pipelines for business and sales reporting.',
+    ],
+    challenges: [
+      'Maintained responsive performance with large table datasets.',
+      'Normalized inconsistent source data for reliable reporting.',
+      'Introduced optimistic UI updates while preserving data integrity.',
+    ],
+  },
+  {
+    id: 'taskflow-mobile',
+    title: 'TaskFlow Mobile',
+    shortDesc: 'A productivity app for task planning, reminders, and collaborative checklists.',
+    fullDesc:
+      'TaskFlow streamlines personal and team planning with recurring tasks, shared boards, and push notifications for deadline-driven work.',
+    tech: ['Flutter', 'Supabase', 'Dart'],
+    imageUrl: 'https://placehold.co/1200x700/31194D/FFD700?text=TaskFlow+Dashboard',
+    images: [
+      'https://placehold.co/1200x700/31194D/FFD700?text=TaskFlow+Dashboard',
+      'https://placehold.co/1200x700/31194D/FFD700?text=Shared+Boards',
+      'https://placehold.co/1200x700/31194D/FFD700?text=Reminder+Settings',
+    ],
+    liveUrl: 'https://example.com/taskflow',
+    githubUrl: 'https://github.com/example/taskflow-mobile',
+    category: 'mobile',
+    role: [
+      'Led architecture for modular feature development.',
+      'Implemented collaborative lists and role-based workspace sharing.',
+      'Configured push notifications for reminders and due dates.',
+    ],
+    challenges: [
+      'Handled timezone correctness for reminders and recurring items.',
+      'Designed offline creation/edit queue with sync reconciliation.',
+      'Improved form UX to reduce setup friction on mobile.',
+    ],
+  },
+  {
+    id: 'vision-quality-inspector',
+    title: 'Vision Quality Inspector',
+    shortDesc: 'Computer vision system for automated defect detection in production lines.',
+    fullDesc:
+      'A model-assisted quality inspection solution that flags anomalies, scores confidence, and routes edge cases for manual verification.',
+    tech: ['Python', 'TensorFlow', 'OpenCV', 'Docker'],
+    imageUrl: 'https://placehold.co/1200x700/31194D/FFD700?text=Vision+Inspector+Feed',
+    images: [
+      'https://placehold.co/1200x700/31194D/FFD700?text=Vision+Inspector+Feed',
+      'https://placehold.co/1200x700/31194D/FFD700?text=Defect+Detection',
+      'https://placehold.co/1200x700/31194D/FFD700?text=Model+Metrics',
+    ],
+    liveUrl: 'https://example.com/vision-inspector',
+    githubUrl: 'https://github.com/example/vision-quality-inspector',
+    category: 'ai',
+    role: [
+      'Trained and evaluated detection models for multiple defect classes.',
+      'Built image preprocessing and augmentation workflows.',
+      'Containerized inference service for consistent deployment.',
+    ],
+    challenges: [
+      'Addressed class imbalance with targeted augmentation strategies.',
+      'Reduced false positives via threshold and post-processing tuning.',
+      'Built monitoring for drift in lighting and camera conditions.',
+    ],
+  },
+  {
+    id: 'booking-suite',
+    title: 'Booking Suite',
+    shortDesc: 'Reservation platform with scheduling, payments, and automated reminders.',
+    fullDesc:
+      'A full-stack booking solution for service businesses with calendar management, payment handling, and customer communication workflows.',
+    tech: ['React', 'Express', 'PostgreSQL', 'Twilio'],
+    imageUrl: 'https://placehold.co/1200x700/31194D/FFD700?text=Booking+Calendar',
+    images: [
+      'https://placehold.co/1200x700/31194D/FFD700?text=Booking+Calendar',
+      'https://placehold.co/1200x700/31194D/FFD700?text=Availability+Rules',
+      'https://placehold.co/1200x700/31194D/FFD700?text=Customer+Reminders',
+    ],
+    liveUrl: 'https://example.com/booking-suite',
+    githubUrl: 'https://github.com/example/booking-suite',
+    category: 'fullstack',
+    role: [
+      'Created scheduling UI with timezone-aware availability.',
+      'Built backend booking rules and conflict prevention logic.',
+      'Integrated reminder channels for SMS and email notifications.',
+    ],
+    challenges: [
+      'Handled overlapping reservations and race conditions safely.',
+      'Designed cancellation/refund logic for edge-case scenarios.',
+      'Improved booking funnel conversion through UX refinements.',
+    ],
+  },
+  {
+    id: 'analytics-copilot',
+    title: 'Analytics Copilot',
+    shortDesc: 'AI-powered analytics assistant for natural-language dashboard insights.',
+    fullDesc:
+      'An assistant that interprets natural-language questions and generates actionable insights from business metrics with chart suggestions.',
+    tech: ['React', 'Python', 'FastAPI', 'PostgreSQL'],
+    imageUrl: 'https://placehold.co/1200x700/31194D/FFD700?text=Analytics+Copilot+Home',
+    images: [
+      'https://placehold.co/1200x700/31194D/FFD700?text=Analytics+Copilot+Home',
+      'https://placehold.co/1200x700/31194D/FFD700?text=NL+Query+Builder',
+      'https://placehold.co/1200x700/31194D/FFD700?text=Insights+Summary',
+    ],
+    liveUrl: 'https://example.com/analytics-copilot',
+    githubUrl: 'https://github.com/example/analytics-copilot',
+    category: 'ai',
+    role: [
+      'Built query interpretation and insight generation workflows.',
+      'Implemented secure multi-tenant data access patterns.',
+      'Developed chart recommendation layer for rapid exploration.',
+    ],
+    challenges: [
+      'Mapped ambiguous queries into deterministic metric definitions.',
+      'Added guardrails to avoid misleading statistical summaries.',
+      'Optimized heavy aggregation queries with caching and indexing.',
+    ],
+  },
+];
