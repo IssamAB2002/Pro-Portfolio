@@ -1,2 +1,2 @@
-release: (cd frontend && npm install --production=false && npm run build:django) && (cd backend && python manage.py collectstatic --noinput && python manage.py migrate)
+release: python manage.py migrate --pythonpath=backend
 web: gunicorn pro_portfolio.wsgi --chdir backend
