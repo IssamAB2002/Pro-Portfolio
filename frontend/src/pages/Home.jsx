@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaBrain, FaCode, FaDatabase, FaDocker, FaExternalLinkAlt, FaPython, FaReact } from 'react-icons/fa';
 import { SiDjango, SiFlutter, SiTensorflow } from 'react-icons/si';
-import api from '../lib/api';
-import { projectsData } from '../data/projectsData';
+import api, { getProjects } from '../lib/api';
+
 
 const CATEGORY_LABELS = {
   frontend: 'Frontend',
@@ -45,25 +45,28 @@ const ProjectCard = ({ project }) => {
   return (
     <div className="group bg-white/5 rounded-xl overflow-hidden backdrop-blur-sm hover:bg-white/10 transition-all duration-300 hover:shadow-2xl hover:shadow-accent/10 border border-white/5 hover:border-accent/30">
       <div className="h-48 bg-gradient-to-br from-primary/50 to-primary/80 relative overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-6xl opacity-30 group-hover:opacity-50 transition-opacity">{project.icon}</span>
-        </div>
+        <img
+          src={project.image_url}
+          alt={`${project.title} preview`}
+          className="h-full w-full object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300"
+          loading="lazy"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-[#31194D] to-transparent"></div>
       </div>
 
       <div className="p-6">
         <h3 className="text-xl font-bold text-white mb-2 group-hover:text-accent transition-colors">{project.title}</h3>
-        <p className="text-gray-400 text-sm mb-4 line-clamp-2">{project.description}</p>
+        <p className="text-gray-400 text-sm mb-4 line-clamp-2">{project.short_desc}</p>
 
         <div className="flex flex-wrap gap-2 mb-4">
-          {project.technologies.map((tech, index) => (
+          {project.tech_stack.map((tech, index) => (
             <span key={index} className="px-2 py-1 text-xs bg-accent/10 text-accent rounded-full">
               {tech}
             </span>
           ))}
         </div>
 
-        <Link to="/projects" className="inline-flex items-center gap-2 text-accent hover:text-white transition-colors text-sm font-medium">
+        <Link to={`/projects/${project.slug}`} className="inline-flex items-center gap-2 text-accent hover:text-white transition-colors text-sm font-medium">
           View Project <FaExternalLinkAlt />
         </Link>
       </div>
@@ -193,13 +196,7 @@ const QuotesCarousel = () => {
 };
 
 const Home = () => {
-  const projects = projectsData.slice(0, 3).map((project) => ({
-    title: project.title,
-    description: project.shortDesc,
-    technologies: project.tech,
-    icon: <FaCode />,
-  }));
-
+  const [projects, setProjects] = useState([]);
   const [skills, setSkills] = useState([]);
   const [skillsLoading, setSkillsLoading] = useState(true);
   const [skillsError, setSkillsError] = useState('');
@@ -234,7 +231,13 @@ const Home = () => {
       }
     };
 
+    const fetchProjects = async () => {
+      const data = await getProjects();
+      setProjects(data.slice(0, 3));
+    };
+
     fetchSkills();
+    fetchProjects();
 
     return () => {
       isMounted = false;
@@ -407,4 +410,3 @@ const Home = () => {
   );
 };
 
-export default Home;

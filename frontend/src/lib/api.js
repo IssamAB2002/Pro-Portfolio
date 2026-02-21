@@ -30,4 +30,36 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// ... existing code ...
+
+export const getProjects = async () => {
+  try {
+    const response = await api.get('/projects/');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    return [];
+  }
+};
+
+export const getBlogs = async () => {
+  try {
+    const response = await api.get('/blogs/');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching blogs:', error);
+    return [];
+  }
+};
+
+export const getBlog = async (slug) => {
+  try {
+    const response = await api.get(`/blogs/${slug}/`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching blog with slug ${slug}:`, error);
+    return null;
+  }
+};
+
 export default api;

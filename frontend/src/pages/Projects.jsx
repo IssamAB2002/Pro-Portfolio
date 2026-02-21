@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft, FaExternalLinkAlt, FaUser } from 'react-icons/fa';
-import { projectsData } from '../data/projectsData';
+import { getProjects } from '../lib/api';
 
 const Projects = () => {
   const sectionRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [projects, setProjects] = useState([]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -21,6 +22,13 @@ const Projects = () => {
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
+
+    const fetchProjects = async () => {
+      const data = await getProjects();
+      setProjects(data);
+    };
+
+    fetchProjects();
 
     return () => observer.disconnect();
   }, []);
@@ -55,7 +63,7 @@ const Projects = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projectsData.map((project, index) => (
+          {projects.map((project, index) => (
             <article
               key={project.id}
               className={`group bg-white/5 rounded-xl overflow-hidden backdrop-blur-sm border border-white/5
@@ -66,7 +74,7 @@ const Projects = () => {
             >
               <div className="h-48 bg-gradient-to-br from-primary/50 to-primary/80 relative overflow-hidden">
                 <img
-                  src={project.imageUrl}
+                  src={project.image_url}
                   alt={`${project.title} preview`}
                   className="h-full w-full object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300"
                   loading="lazy"
@@ -79,11 +87,11 @@ const Projects = () => {
                   {project.title}
                 </h2>
                 <p className="text-gray-400 text-sm mb-4 leading-relaxed min-h-[3rem]">
-                  {project.shortDesc}
+                  {project.short_desc}
                 </p>
 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tech.map((item) => (
+                  {project.tech_stack.map((item) => (
                     <span
                       key={`${project.id}-${item}`}
                       className="px-2 py-1 text-xs bg-[#FFD700]/10 text-[#FFD700] rounded-full"
@@ -94,7 +102,7 @@ const Projects = () => {
                 </div>
 
                 <Link
-                  to={`/projects/${project.id}`}
+                  to={`/projects/${project.slug}`}
                   className="inline-flex items-center gap-2 text-[#FFD700] hover:text-white transition-colors text-sm font-medium"
                   aria-label={`View details for ${project.title}`}
                 >
@@ -109,4 +117,3 @@ const Projects = () => {
   );
 };
 
-export default Projects;
