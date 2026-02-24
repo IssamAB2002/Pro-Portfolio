@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import { getBlogs } from '../lib/api';
+import { blogsData } from '../data/blogsData';
 
 const Blogs = () => {
   const [loaded, setLoaded] = useState(false);
@@ -9,12 +9,8 @@ const Blogs = () => {
 
   useEffect(() => {
     setLoaded(true);
-    const fetchBlogs = async () => {
-      const data = await getBlogs();
-      setArticles(data);
-    };
-
-    fetchBlogs();
+    // Simulate fetching data by using the mock data
+    setArticles(blogsData);
   }, []);
 
   return (

@@ -28,7 +28,7 @@ function App() {
         <Route path="/blogs/:id" element={<BlogDetails />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/projects" element={<Projects />} />
-        <Route path="/projects/:id" element={<ProjectDetails />} />
+        <Route path="/projects/:slug" element={<ProjectDetails />} />
         <Route path="/secret-admin/*" element={<SecretAdminRedirect />} />
       </Routes>
     </Router>
