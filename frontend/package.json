@@ -1,0 +1,29 @@
+{
+  "name": "devforge",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:django": "vite build && npm run sync-django",
+    "sync-django": "node scripts/sync-to-django.mjs",
+    "preview": "vite preview",
+    "audit": "npm audit --audit-level=moderate"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.24",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.19",
+    "vite": "^6.4.1"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.7.0",
+    "axios": "^1.13.5",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-icons": "^5.5.0",
+    "react-responsive-carousel": "^3.2.23",
+    "react-router-dom": "^7.13.0"
+  }
+}
