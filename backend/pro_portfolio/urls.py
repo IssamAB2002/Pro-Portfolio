@@ -25,7 +25,7 @@ admin_prefix = settings.ADMIN_URL.strip("/")
 urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     path("api/", include("portfolio.urls")),
-     # Catch-all: serve React index.html for any other route
+    # Catch-all: serve React index.html for any other route
     path('', TemplateView.as_view(template_name='index.html')),
     re_path(r'^.*$', TemplateView.as_view(template_name='index.html')),
 ]
