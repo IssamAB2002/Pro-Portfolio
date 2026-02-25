@@ -1,6 +1,6 @@
 import uuid
 
-from django.contrib.postgres.fields import ArrayField
+from django.db.models import JSONField
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.text import slugify
@@ -17,7 +17,7 @@ class Project(models.Model):
     slug = models.SlugField(max_length=200, unique=True, blank=True)
     short_desc = models.CharField(max_length=240)
     description = models.TextField()
-    tech_stack = ArrayField(models.CharField(max_length=50), blank=True, default=list)
+    tech_stack = JSONField(blank=True, default=list)
     image_url = models.URLField(blank=True)
     live_url = models.URLField(blank=True)
     github_url = models.URLField(blank=True)
@@ -69,7 +69,7 @@ class Experience(models.Model):
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
     description = models.TextField()
-    achievements = ArrayField(models.TextField(), blank=True, default=list)
+    achievements = JSONField(blank=True, default=list)
 
     class Meta:
         ordering = ["-start_date"]
@@ -111,3 +111,31 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.email})"
+
+
+class Blog(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=180)
+    slug = models.SlugField(max_length=200, unique=True, blank=True)
+    short_desc = models.CharField(max_length=240)
+    category = models.CharField(max_length=50)
+    read_time = models.CharField(max_length=50)
+    date = models.CharField(max_length=50)
+    image_url = models.URLField(blank=True)
+    images = JSONField(blank=True, default=list)
+    story = models.TextField()
+    highlights = JSONField(blank=True, default=list)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title

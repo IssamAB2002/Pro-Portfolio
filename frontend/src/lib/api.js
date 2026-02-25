@@ -42,6 +42,17 @@ export const getProjects = async () => {
   }
 };
 
+
+export const getProject = async (slug) => {
+  try {
+    const response = await api.get(`/projects/${slug}/`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching project with slug ${slug}:`, error);
+    return null;
+  }
+};
+
 export const getBlogs = async () => {
   try {
     const response = await api.get('/blogs/');

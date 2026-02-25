@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import { blogsData } from '../data/blogsData';
+import { getBlogs } from '../lib/api';
 
 const Blogs = () => {
   const [loaded, setLoaded] = useState(false);
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
-    setLoaded(true);
-    // Simulate fetching data by using the mock data
-    setArticles(blogsData);
+    const fetchBlogs = async () => {
+      const blogs = await getBlogs();
+      setArticles(blogs);
+      setLoaded(true);
+    };
+
+    fetchBlogs();
   }, []);
 
   return (
@@ -33,7 +37,7 @@ const Blogs = () => {
 
         {articles.length === 0 ? (
           <div className="text-center text-white text-lg">
-            There are no blogs in the database for now.
+            There's no blogs for now yet. New blogs will be added soon.
           </div>
         ) : (
           <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -5,7 +5,7 @@ import {
   FaExternalLinkAlt,
   FaGithub,
 } from 'react-icons/fa';
-import { getProjects } from '../lib/api';
+import { getProject } from '../lib/api';
 
 const ProjectDetails = () => {
   const { slug } = useParams();
@@ -14,8 +14,7 @@ const ProjectDetails = () => {
 
   useEffect(() => {
     const fetchProject = async () => {
-      const projects = await getProjects();
-      const foundProject = projects.find((p) => p.slug === slug);
+      const foundProject = await getProject(slug);
       setProject(foundProject);
       setLoaded(true);
     };

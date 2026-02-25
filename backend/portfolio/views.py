@@ -3,6 +3,7 @@ import json
 from django.core.cache import cache
 from django.core.validators import validate_email
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_GET, require_http_methods
 
 from .models import ContactMessage, Education, Project, Skill
@@ -10,29 +11,45 @@ from .models import ContactMessage, Education, Project, Skill
 
 @require_GET
 def project_list(request):
-    projects = Project.objects.all().values(
-        "id",
-        "title",
-        "slug",
-        "short_desc",
-        "description",
-        "tech_stack",
-        "image_url",
-        "live_url",
-        "github_url",
-        "category",
-        "created_at",
-        "updated_at",
-    )
-    payload = []
-    for project in projects:
-        payload.append(
-            {
-                **project,
-                "technologies": project.get("tech_stack", []),
-            }
-        )
+    projects = Project.objects.all().order_by("-created_at")
+    payload = [
+        {
+            "id": p.id,
+            "title": p.title,
+            "slug": p.slug,
+            "short_desc": p.short_desc,
+            "description": p.description,
+            "tech_stack": p.tech_stack,
+            "image_url": p.image_url,
+            "live_url": p.live_url,
+            "github_url": p.github_url,
+            "category": p.category,
+            "created_at": p.created_at,
+            "updated_at": p.updated_at,
+        }
+        for p in projects
+    ]
     return JsonResponse(payload, safe=False)
+
+
+@require_GET
+def project_detail(request, slug):
+    project = get_object_or_404(Project, slug=slug)
+    payload = {
+        "id": project.id,
+        "title": project.title,
+        "slug": project.slug,
+        "short_desc": project.short_desc,
+        "description": project.description,
+        "tech_stack": project.tech_stack,
+        "image_url": project.image_url,
+        "live_url": project.live_url,
+        "github_url": project.github_url,
+        "category": project.category,
+        "created_at": project.created_at,
+        "updated_at": project.updated_at,
+    }
+    return JsonResponse(payload)
 
 
 @require_GET
@@ -52,6 +69,7 @@ def skill_list(request):
 import logging
 
 logger = logging.getLogger(__name__)
+
 
 @require_GET
 def home_skill_list(request):
