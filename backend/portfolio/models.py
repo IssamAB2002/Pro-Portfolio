@@ -1,10 +1,8 @@
 import uuid
+import json
 
-from django.db.models import JSONField
 
 
-def default_factory():
-    return []
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.text import slugify
@@ -21,7 +19,7 @@ class Project(models.Model):
     slug = models.SlugField(max_length=200, unique=True, blank=True)
     short_desc = models.CharField(max_length=240)
     description = models.TextField()
-    tech_stack = JSONField(blank=True, default=default_factory)
+    tech_stack_json = models.TextField(blank=True)
     image_url = models.URLField(blank=True)
     live_url = models.URLField(blank=True)
     github_url = models.URLField(blank=True)
@@ -31,6 +29,19 @@ class Project(models.Model):
 
     class Meta:
         ordering = ["title"]
+
+    @property
+    def tech_stack(self):
+        if not self.tech_stack_json:
+            return []
+        try:
+            return json.loads(self.tech_stack_json)
+        except json.JSONDecodeError:
+            return []
+
+    @tech_stack.setter
+    def tech_stack(self, value):
+        self.tech_stack_json = json.dumps(value)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -73,10 +84,24 @@ class Experience(models.Model):
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
     description = models.TextField()
-    achievements = JSONField(blank=True, default=default_factory)
+    achievements_json = models.TextField(blank=True, default="[]")
 
     class Meta:
         ordering = ["-start_date"]
+
+    @property
+    def achievements(self):
+        if not self.achievements_json:
+            return []
+        try:
+            return json.loads(self.achievements_json)
+        except json.JSONDecodeError:
+            # If the data is malformed, return an empty list
+            return []
+
+    @achievements.setter
+    def achievements(self, value):
+        self.achievements_json = json.dumps(value)
 
     def __str__(self):
         return f"{self.title} @ {self.company}"
@@ -126,15 +151,41 @@ class Blog(models.Model):
     read_time = models.CharField(max_length=50)
     date = models.CharField(max_length=50)
     image_url = models.URLField(blank=True)
-    images = JSONField(blank=True, default=default_factory)
+    images_json = models.TextField(blank=True, default="[]")
     story = models.TextField()
-    highlights = JSONField(blank=True, default=default_factory)
+    highlights_json = models.TextField(blank=True, default="[]")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
     class Meta:
         ordering = ["-created_at"]
+
+    @property
+    def images(self):
+        if not self.images_json:
+            return []
+        try:
+            return json.loads(self.images_json)
+        except json.JSONDecodeError:
+            return []
+
+    @images.setter
+    def images(self, value):
+        self.images_json = json.dumps(value)
+
+    @property
+    def highlights(self):
+        if not self.highlights_json:
+            return []
+        try:
+            return json.loads(self.highlights_json)
+        except json.JSONDecodeError:
+            return []
+
+    @highlights.setter
+    def highlights(self, value):
+        self.highlights_json = json.dumps(value)
 
     def save(self, *args, **kwargs):
         if not self.slug:
