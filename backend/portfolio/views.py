@@ -6,7 +6,53 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_GET, require_http_methods
 
-from .models import ContactMessage, Education, Project, Skill
+from .models import Blog, ContactMessage, Education, Project, Skill
+
+
+@require_GET
+def blog_list(request):
+    blogs = Blog.objects.all().order_by("-created_at")
+    payload = [
+        {
+            "id": b.id,
+            "title": b.title,
+            "slug": b.slug,
+            "short_desc": b.short_desc,
+            "category": b.category,
+            "read_time": b.read_time,
+            "date": b.date,
+            "image_url": b.image_url,
+            "images": b.images,
+            "story": b.story,
+            "highlights": b.highlights,
+            "created_at": b.created_at,
+            "updated_at": b.updated_at,
+        }
+        for b in blogs
+    ]
+    return JsonResponse(payload, safe=False)
+
+
+@require_GET
+def blog_detail(request, slug):
+    blog = get_object_or_404(Blog, slug=slug)
+    payload = {
+        "id": blog.id,
+        "title": blog.title,
+        "slug": blog.slug,
+        "short_desc": blog.short_desc,
+        "category": blog.category,
+        "read_time": blog.read_time,
+        "date": blog.date,
+        "image_url": blog.image_url,
+        "images": blog.images,
+        "story": blog.story,
+        "highlights": blog.highlights,
+        "created_at": blog.created_at,
+        "updated_at": blog.updated_at,
+    }
+    return JsonResponse(payload)
+
 
 
 @require_GET

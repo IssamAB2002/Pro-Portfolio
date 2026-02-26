@@ -1,6 +1,10 @@
 import uuid
 
 from django.db.models import JSONField
+
+
+def default_factory():
+    return []
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.text import slugify
@@ -17,7 +21,7 @@ class Project(models.Model):
     slug = models.SlugField(max_length=200, unique=True, blank=True)
     short_desc = models.CharField(max_length=240)
     description = models.TextField()
-    tech_stack = JSONField(blank=True, default=list)
+    tech_stack = JSONField(blank=True, default=default_factory)
     image_url = models.URLField(blank=True)
     live_url = models.URLField(blank=True)
     github_url = models.URLField(blank=True)
@@ -69,7 +73,7 @@ class Experience(models.Model):
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
     description = models.TextField()
-    achievements = JSONField(blank=True, default=list)
+    achievements = JSONField(blank=True, default=default_factory)
 
     class Meta:
         ordering = ["-start_date"]
@@ -122,9 +126,9 @@ class Blog(models.Model):
     read_time = models.CharField(max_length=50)
     date = models.CharField(max_length=50)
     image_url = models.URLField(blank=True)
-    images = JSONField(blank=True, default=list)
+    images = JSONField(blank=True, default=default_factory)
     story = models.TextField()
-    highlights = JSONField(blank=True, default=list)
+    highlights = JSONField(blank=True, default=default_factory)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

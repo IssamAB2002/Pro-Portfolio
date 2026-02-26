@@ -7,11 +7,15 @@ from .views import (
     project_detail,
     project_list,
     skill_list,
+    blog_list,
+    blog_detail,
 )
 
 urlpatterns = [
     path("projects/", project_list, name="project-list"),
     path("projects/<slug:slug>/", project_detail, name="project-detail"),
+    path("blogs/", blog_list, name="blog-list"),
+    path("blogs/<slug:slug>/", blog_detail, name="blog-detail"),
     path("skills/", skill_list, name="skill-list"),
     path("skills/home/", home_skill_list, name="home-skill-list"),
     path("education/", education_list, name="education-list"),
