@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     "corsheaders",
     "portfolio.apps.PortfolioConfig",
-    "portfolio",
 ]
 
 MIDDLEWARE = [
