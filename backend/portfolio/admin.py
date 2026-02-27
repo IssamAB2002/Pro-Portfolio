@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import ContactMessage, Education, Experience, Project, Skill
+from .models import Blog, ContactMessage, Education, Experience, Project, Skill
 
 
 @admin.register(Project)
@@ -35,6 +35,12 @@ class ContactMessageAdmin(admin.ModelAdmin):
     search_fields = ("name", "email")
     readonly_fields = ("timestamp",)
     ordering = ("-timestamp",)
+
+@admin.register(Blog)
+class BlogAdmin(admin.ModelAdmin):
+    list_display = ['title', 'short_desc', 'created_at']  # fields to show in list
+    search_fields = ['title']
+    
 
 
 admin.site.site_header = "Issam Portfolio Admin"
