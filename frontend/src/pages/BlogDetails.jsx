@@ -1,15 +1,26 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { FaArrowLeft, FaChevronLeft, FaChevronRight, FaTimes } from 'react-icons/fa';
-import { blogsData } from '../data/blogsData';
+import { FaArrowLeft, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { getBlog } from '../lib/api';
+import Carousel from '../components/Carousel';
 
 const BlogDetails = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const [loaded, setLoaded] = useState(false);
+  const [article, setArticle] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const article = blogsData.find((item) => item.id === id);
+  useEffect(() => {
+    const fetchBlog = async () => {
+      setLoaded(false);
+      const fetchedArticle = await getBlog(slug);
+      setArticle(fetchedArticle);
+      setLoaded(true);
+    };
+
+    fetchBlog();
+  }, [slug]);
 
   const articleImages = useMemo(() => {
     if (!article) return [];
@@ -25,18 +36,6 @@ const BlogDetails = () => {
     setCurrentImageIndex((prev) => (prev - 1 + articleImages.length) % articleImages.length);
   };
 
-  useEffect(() => {
-    setLoaded(true);
-    setCurrentImageIndex(0);
-  }, [id]);
-
-  useEffect(() => {
-    if (articleImages.length <= 1) return undefined;
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % articleImages.length);
-    }, 3500);
-    return () => clearInterval(interval);
-  }, [articleImages.length]);
 
   useEffect(() => {
     const handleEsc = (event) => {
@@ -45,6 +44,14 @@ const BlogDetails = () => {
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, []);
+
+  if (!loaded && !article) {
+    return (
+      <div className="min-h-screen bg-[#31194D] pt-24 pb-16 px-4 flex items-center justify-center">
+        <div className="text-white text-2xl">Loading blog post...</div>
+      </div>
+    );
+  }
 
   if (!article) {
     return <Navigate to="/blogs" replace />;
@@ -174,57 +181,12 @@ const BlogDetails = () => {
         </section>
       </div>
 
-      {isModalOpen && (
-        <div
-          className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
-          onClick={() => setIsModalOpen(false)}
-          role="presentation"
-        >
-          <div
-            className="relative w-full max-w-6xl rounded-xl overflow-hidden border border-white/20 bg-[#31194D]"
-            onClick={(event) => event.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-label={`${article.title} image preview`}
-          >
-            <button
-              type="button"
-              onClick={() => setIsModalOpen(false)}
-              className="absolute top-3 right-3 z-10 p-2 rounded-full bg-black/50 text-white hover:bg-[#FFD700] hover:text-[#31194D] transition-all duration-300"
-              aria-label="Close image preview"
-            >
-              <FaTimes />
-            </button>
-
-            <img
-              src={articleImages[currentImageIndex]}
-              alt={`${article.title} fullscreen image ${currentImageIndex + 1}`}
-              className="w-full max-h-[85vh] object-contain bg-[#1f1030]"
-            />
-
-            {articleImages.length > 1 && (
-              <>
-                <button
-                  type="button"
-                  onClick={goToPrevImage}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/50 text-white hover:bg-[#FFD700] hover:text-[#31194D] transition-all duration-300"
-                  aria-label="Previous fullscreen image"
-                >
-                  <FaChevronLeft />
-                </button>
-                <button
-                  type="button"
-                  onClick={goToNextImage}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/50 text-white hover:bg-[#FFD700] hover:text-[#31194D] transition-all duration-300"
-                  aria-label="Next fullscreen image"
-                >
-                  <FaChevronRight />
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+      <Carousel
+        images={articleImages}
+        title={article.title}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

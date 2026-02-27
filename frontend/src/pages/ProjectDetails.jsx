@@ -1,16 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import {
-  FaArrowLeft,
-  FaExternalLinkAlt,
-  FaGithub,
-} from 'react-icons/fa';
+import { FaArrowLeft, FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
 import { getProject } from '../lib/api';
+import Carousel from '../components/Carousel';
 
 const ProjectDetails = () => {
   const { slug } = useParams();
   const [project, setProject] = useState(null);
   const [loaded, setLoaded] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -21,6 +19,13 @@ const ProjectDetails = () => {
 
     fetchProject();
   }, [slug]);
+
+  const projectImages = useMemo(() => {
+    if (!project) return [];
+    if (Array.isArray(project.images) && project.images.length > 0)
+      return project.images;
+    return [project.image_url].filter(Boolean);
+  }, [project]);
 
   if (!loaded) {
     return <div>Loading...</div>; // Or a spinner
@@ -46,24 +51,37 @@ const ProjectDetails = () => {
             loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">{project.title}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            {project.title}
+          </h1>
 
           <div className="rounded-xl overflow-hidden border border-white/10 bg-white/5 mb-8">
-            <img
-              src={project.image_url}
-              alt={`${project.title} preview`}
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(true)}
               className="w-full h-auto object-cover"
-            />
+              aria-label={`Open image carousel for ${project.title}`}
+            >
+              <img
+                src={project.image_url}
+                alt={`${project.title} preview`}
+                className="w-full h-auto object-cover"
+              />
+            </button>
           </div>
         </div>
 
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-white mb-3">Overview</h2>
-          <p className="text-[#E0E0E0] leading-relaxed">{project.description}</p>
+          <p className="text-[#E0E0E0] leading-relaxed">
+            {project.description}
+          </p>
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-white mb-3">Tech Stack</h2>
+          <h2 className="text-2xl font-semibold text-white mb-3">
+            Tech Stack
+          </h2>
           <div className="flex flex-wrap gap-2">
             {project.tech_stack.map((item) => (
               <span
@@ -103,9 +121,14 @@ const ProjectDetails = () => {
           )}
         </section>
       </div>
+      <Carousel
+        images={projectImages}
+        title={project.title}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };
 
 export default ProjectDetails;
-
