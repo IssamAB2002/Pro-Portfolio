@@ -19,6 +19,7 @@ class Project(models.Model):
     description = models.TextField()
     tech_stack = ArrayField(models.CharField(max_length=100), blank=True, default=list)
     image_url = models.URLField(blank=True)
+    images = ArrayField(models.URLField(), blank=True, default=list)
     live_url = models.URLField(blank=True)
     github_url = models.URLField(blank=True)
     category = models.CharField(max_length=20, choices=Category.choices)

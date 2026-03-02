@@ -25,7 +25,7 @@ const BlogDetails = () => {
   const articleImages = useMemo(() => {
     if (!article) return [];
     if (Array.isArray(article.images) && article.images.length > 0) return article.images;
-    return [article.image].filter(Boolean);
+    return [article.image_url].filter(Boolean);
   }, [article]);
 
   const goToNextImage = () => {
@@ -75,7 +75,7 @@ const BlogDetails = () => {
         >
           <div className="flex flex-wrap items-center gap-3 mb-4">
             <span className="px-2.5 py-1 rounded-full bg-[#FFD700]/10 text-[#FFD700] text-xs">{article.category}</span>
-            <span className="text-gray-400 text-sm">{article.readTime}</span>
+            <span className="text-gray-400 text-sm">{article.read_time}</span>
             <span className="text-gray-500 text-sm">{article.date}</span>
           </div>
 
@@ -192,4 +192,3 @@ const BlogDetails = () => {
 };
 
 export default BlogDetails;
-

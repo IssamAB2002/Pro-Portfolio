@@ -58,15 +58,23 @@ const ProjectDetails = () => {
           <div className="rounded-xl overflow-hidden border border-white/10 bg-white/5 mb-8">
             <button
               type="button"
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => {
+                if (projectImages.length > 0) setIsModalOpen(true);
+              }}
               className="w-full h-auto object-cover"
               aria-label={`Open image carousel for ${project.title}`}
             >
-              <img
-                src={project.image_url}
-                alt={`${project.title} preview`}
-                className="w-full h-auto object-cover"
-              />
+              {projectImages.length > 0 ? (
+                <img
+                  src={projectImages[0]}
+                  alt={`${project.title} preview`}
+                  className="w-full h-auto object-cover"
+                />
+              ) : (
+                <div className="w-full h-[240px] sm:h-[340px] md:h-[420px] flex items-center justify-center text-white/70">
+                  No images available
+                </div>
+              )}
             </button>
           </div>
         </div>
