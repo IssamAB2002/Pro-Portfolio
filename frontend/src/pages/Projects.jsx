@@ -8,6 +8,14 @@ const Projects = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [projects, setProjects] = useState([]);
 
+  const projectTechStack = (project) => {
+    if (!project || !Array.isArray(project.tech_stack)) return [];
+    return project.tech_stack
+      .filter((item) => typeof item === 'string')
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0 && !/^https?:\/\//i.test(item));
+  };
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -91,7 +99,7 @@ const Projects = () => {
                 </p>
 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tech_stack.map((item) => (
+                  {projectTechStack(project).map((item) => (
                     <span
                       key={`${project.id}-${item}`}
                       className="px-2 py-1 text-xs bg-[#FFD700]/10 text-[#FFD700] rounded-full"

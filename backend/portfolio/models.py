@@ -104,6 +104,10 @@ class ContactMessage(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=120)
     email = models.EmailField()
+    service = models.CharField(max_length=120, blank=True)
+    budget = models.CharField(max_length=120, blank=True)
+    timeline = models.CharField(max_length=120, blank=True)
+    phone = models.CharField(max_length=80, blank=True)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 

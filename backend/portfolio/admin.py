@@ -31,8 +31,8 @@ class EducationAdmin(admin.ModelAdmin):
 
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
-    list_display = ("name", "email", "timestamp")
-    search_fields = ("name", "email")
+    list_display = ("name", "email", "service", "budget", "timeline", "phone", "timestamp")
+    search_fields = ("name", "email", "service", "budget", "timeline", "phone", "message")
     readonly_fields = ("timestamp",)
     ordering = ("-timestamp",)
 

@@ -4,6 +4,7 @@ from django.core.cache import cache
 from django.core.validators import validate_email
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_http_methods
 
 from .models import Blog, ContactMessage, Education, Project, Skill
@@ -185,6 +186,7 @@ def _client_ip(request):
     return request.META.get("REMOTE_ADDR", "unknown")
 
 
+@csrf_exempt
 @require_http_methods(["POST"])
 def contact_message_create(request):
     rate_limit = 5
@@ -226,18 +228,14 @@ def contact_message_create(request):
     if len(service) > 120 or len(budget) > 120 or len(timeline) > 120 or len(phone) > 80:
         return JsonResponse({"detail": "One or more fields exceed the maximum allowed length."}, status=400)
 
-    composed_message = (
-        f"Service: {service or 'N/A'}\n"
-        f"Budget: {budget or 'N/A'}\n"
-        f"Timeline: {timeline or 'N/A'}\n"
-        f"Phone: {phone or 'N/A'}\n\n"
-        f"{message}"
-    )
-
     ContactMessage.objects.create(
         name=full_name,
         email=email,
-        message=composed_message,
+        service=service,
+        budget=budget,
+        timeline=timeline,
+        phone=phone,
+        message=message,
     )
 
     if cache.add(rate_key, 1, timeout=rate_window_seconds):

@@ -27,6 +27,15 @@ const ProjectDetails = () => {
     return [project.image_url].filter(Boolean);
   }, [project]);
 
+  const projectTechStack = useMemo(() => {
+    if (!project) return [];
+    if (!Array.isArray(project.tech_stack)) return [];
+    return project.tech_stack
+      .filter((item) => typeof item === 'string')
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0 && !/^https?:\/\//i.test(item));
+  }, [project]);
+
   if (!loaded) {
     return <div>Loading...</div>; // Or a spinner
   }
@@ -91,7 +100,7 @@ const ProjectDetails = () => {
             Tech Stack
           </h2>
           <div className="flex flex-wrap gap-2">
-            {project.tech_stack.map((item) => (
+            {projectTechStack.map((item) => (
               <span
                 key={`${project.id}-tech-${item}`}
                 className="px-3 py-1 text-sm bg-[#FFD700]/10 text-[#FFD700] rounded-full"
