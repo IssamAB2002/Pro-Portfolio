@@ -4,6 +4,73 @@ import { FaArrowLeft, FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
 import { getProject } from '../lib/api';
 import Carousel from '../components/Carousel';
 
+const descriptionStyles = `
+  .project-description h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #FFD700;
+    margin: 1.5rem 0 0.75rem;
+  }
+  .project-description h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #FFD700;
+    margin: 1.4rem 0 0.6rem;
+  }
+  .project-description h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f0c040;
+    margin: 1.2rem 0 0.5rem;
+  }
+  .project-description p {
+    margin: 0.6rem 0 1rem;
+    line-height: 1.75;
+    color: #E0E0E0;
+  }
+  .project-description ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+    margin: 0.5rem 0 1rem;
+  }
+  .project-description ol {
+    list-style: decimal;
+    padding-left: 1.5rem;
+    margin: 0.5rem 0 1rem;
+  }
+  .project-description li {
+    margin: 0.3rem 0;
+    color: #E0E0E0;
+    line-height: 1.7;
+  }
+  .project-description strong {
+    color: #ffffff;
+    font-weight: 600;
+  }
+  .project-description em {
+    color: #d0d0d0;
+    font-style: italic;
+  }
+  .project-description code {
+    background: rgba(255,215,0,0.1);
+    color: #FFD700;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+  .project-description pre {
+    background: rgba(0,0,0,0.3);
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+  .project-description a {
+    color: #FFD700;
+    text-decoration: underline;
+  }
+`;
+
 const ProjectDetails = () => {
   const { slug } = useParams();
   const [project, setProject] = useState(null);
@@ -37,7 +104,7 @@ const ProjectDetails = () => {
   }, [project]);
 
   if (!loaded) {
-    return <div>Loading...</div>; // Or a spinner
+    return <div>Loading...</div>;
   }
 
   if (!project) {
@@ -46,6 +113,9 @@ const ProjectDetails = () => {
 
   return (
     <div className="min-h-screen bg-[#31194D] py-24 px-4">
+      {/* Inject description styles */}
+      <style>{descriptionStyles}</style>
+
       <div className="max-w-5xl mx-auto">
         <Link
           to="/projects"
@@ -89,9 +159,8 @@ const ProjectDetails = () => {
         </div>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-white mb-3">Overview</h2>
           <div
-            className="prose prose-invert max-w-none text-[#E0E0E0] leading-relaxed"
+            className="project-description"
             dangerouslySetInnerHTML={{ __html: project.description_html }}
           />
         </section>
