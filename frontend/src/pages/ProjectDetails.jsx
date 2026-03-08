@@ -90,9 +90,10 @@ const ProjectDetails = () => {
 
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-white mb-3">Overview</h2>
-          <p className="text-[#E0E0E0] leading-relaxed">
-            {project.description}
-          </p>
+          <div
+            className="prose prose-invert max-w-none text-[#E0E0E0] leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: project.description_html }}
+          />
         </section>
 
         <section className="mb-8">
