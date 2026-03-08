@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Link, Navigate, useParams } from 'react-router-dom';
-import { FaArrowLeft, FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
-import { getProject } from '../lib/api';
-import Carousel from '../components/Carousel';
+import { useEffect, useMemo, useState } from "react";
+import { Link, Navigate, useParams } from "react-router-dom";
+import { FaArrowLeft, FaExternalLinkAlt, FaGithub } from "react-icons/fa";
+import { getProject } from "../lib/api";
+import Carousel from "../components/Carousel";
 
 const descriptionStyles = `
   .project-description h1 {
@@ -98,7 +98,7 @@ const ProjectDetails = () => {
     if (!project) return [];
     if (!Array.isArray(project.tech_stack)) return [];
     return project.tech_stack
-      .filter((item) => typeof item === 'string')
+      .filter((item) => typeof item === "string")
       .map((item) => item.trim())
       .filter((item) => item.length > 0 && !/^https?:\/\//i.test(item));
   }, [project]);
@@ -119,17 +119,15 @@ const ProjectDetails = () => {
       <div className="max-w-5xl mx-auto">
         <Link
           to="/projects"
-          className="inline-flex items-center gap-2 text-[#FFD700] hover:text-white transition-colors mb-8"
-        >
+          className="inline-flex items-center gap-2 text-[#FFD700] hover:text-white transition-colors mb-8">
           <FaArrowLeft />
           Back to Projects
         </Link>
 
         <div
           className={`transition-all duration-800 ${
-            loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
-        >
+            loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
             {project.title}
           </h1>
@@ -141,8 +139,7 @@ const ProjectDetails = () => {
                 if (projectImages.length > 0) setIsModalOpen(true);
               }}
               className="w-full h-auto object-cover"
-              aria-label={`Open image carousel for ${project.title}`}
-            >
+              aria-label={`Open image carousel for ${project.title}`}>
               {projectImages.length > 0 ? (
                 <img
                   src={projectImages[0]}
@@ -166,15 +163,12 @@ const ProjectDetails = () => {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-white mb-3">
-            Tech Stack
-          </h2>
+          <h2 className="text-2xl font-semibold text-white mb-3">Tech Stack</h2>
           <div className="flex flex-wrap gap-2">
             {projectTechStack.map((item) => (
               <span
                 key={`${project.id}-tech-${item}`}
-                className="px-3 py-1 text-sm bg-[#FFD700]/10 text-[#FFD700] rounded-full"
-              >
+                className="px-3 py-1 text-sm bg-[#FFD700]/10 text-[#FFD700] rounded-full">
                 {item}
               </span>
             ))}
@@ -188,8 +182,7 @@ const ProjectDetails = () => {
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#FFD700] text-[#31194D] font-semibold rounded-lg hover:bg-white hover:scale-105 transition-all duration-300"
-              aria-label={`Open live demo for ${project.title}`}
-            >
+              aria-label={`Open live demo for ${project.title}`}>
               <FaExternalLinkAlt />
               Live Demo
             </a>
@@ -200,8 +193,7 @@ const ProjectDetails = () => {
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 px-5 py-2.5 border border-[#FFD700] text-[#FFD700] rounded-lg hover:bg-[#FFD700] hover:text-[#31194D] hover:scale-105 transition-all duration-300"
-              aria-label={`Open GitHub repository for ${project.title}`}
-            >
+              aria-label={`Open GitHub repository for ${project.title}`}>
               <FaGithub />
               GitHub Repo
             </a>
