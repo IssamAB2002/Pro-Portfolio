@@ -3,6 +3,8 @@ import logging
 
 import bleach
 import markdown
+import requests
+from django.conf import settings
 from django.core.cache import cache
 from django.core.validators import validate_email
 from django.http import JsonResponse
@@ -13,6 +15,24 @@ from django.views.decorators.http import require_GET, require_http_methods
 from .models import Blog, ContactMessage, Education, Project, Skill
 
 logger = logging.getLogger(__name__)
+
+
+def _notify_make_webhook(contact_data):
+    url = getattr(settings, "MAKE_WEBHOOK_URL", "") or ""
+    if not url:
+        return
+
+    try:
+        response = requests.post(
+            url,
+            json=contact_data,
+            timeout=(3.05, 6),
+            headers={"Content-Type": "application/json"},
+        )
+        if response.status_code >= 400:
+            logger.warning("Make webhook returned status=%s", response.status_code)
+    except Exception:
+        logger.warning("Make webhook request failed", exc_info=True)
 
 
 # ── Markdown helper ──────────────────────────────────────────────────────────
@@ -233,7 +253,7 @@ def contact_message_create(request):
     except json.JSONDecodeError:
         return JsonResponse({"detail": "Invalid JSON payload."}, status=400)
 
-    full_name = str(payload.get("fullName", "")).strip()
+    full_name = str(payload.get("fullName") or payload.get("full_name") or "").strip()
     email = str(payload.get("email", "")).strip()
     message = str(payload.get("message", "")).strip()
     service = str(payload.get("service", "")).strip()
@@ -269,6 +289,18 @@ def contact_message_create(request):
         timeline=timeline,
         phone=phone,
         message=message,
+    )
+
+    _notify_make_webhook(
+        {
+            "full_name": full_name,
+            "email": email,
+            "service": service,
+            "budget": budget,
+            "timeline": timeline,
+            "phone": phone,
+            "message": message,
+        }
     )
 
     if cache.add(rate_key, 1, timeout=rate_window_seconds):

@@ -24,6 +24,9 @@ Required backend vars:
 - `DJANGO_ALLOWED_HOSTS`
 - `DATABASE_URL`
 
+Optional integrations:
+- `MAKE_WEBHOOK_URL` (Make.com webhook for contact notifications)
+
 Recommended production vars:
 - `DJANGO_ADMIN_URL`
 - `DJANGO_CORS_ALLOWED_ORIGINS`

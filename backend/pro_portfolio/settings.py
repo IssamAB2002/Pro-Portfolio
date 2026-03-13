@@ -200,3 +200,8 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
+
+# --- INTEGRATIONS ---
+# Make.com: webhook to notify you on new contact submissions.
+# Keep this out of source control and set it via environment variables.
+MAKE_WEBHOOK_URL = env("MAKE_WEBHOOK_URL", default="")
